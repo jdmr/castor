@@ -11,6 +11,8 @@
 //    grails.config.locations << "file:" + System.properties["${appName}.config.location"]
 // }
 
+grails.app.context = "/"
+
 grails.project.groupId = appName // change this to alter the default package name and Maven publishing destination
 
 // The ACCEPT header will not be used for content negotiation for user agents containing the following strings (defaults to the 4 major rendering engines)
@@ -112,4 +114,60 @@ log4j = {
            'org.springframework',
            'org.hibernate',
            'net.sf.ehcache.hibernate'
+
+    debug  'grails.app',
+           'com.the6hours', 'grails.app.taglib.com.the6hours' //,
+           //'org.springframework.security'
+//    'org.hibernate.SQL'
+
+//    trace  'org.hibernate.type'
+
+    off    'grails.app.services.org.grails.plugin.resource',
+            'grails.app.taglib.org.grails.plugin.resource',
+            'grails.app.resourceMappers.org.grails.plugin.resource'
+
+
 }
+
+grails.plugins.twitterbootstrap.fixtaglib = true
+
+
+// Added by the Spring Security Core plugin:
+grails.plugin.springsecurity.userLookup.userDomainClassName = 'castor.User'
+grails.plugin.springsecurity.userLookup.authorityJoinClassName = 'castor.UserRole'
+grails.plugin.springsecurity.authority.className = 'castor.Role'
+grails.plugin.springsecurity.controllerAnnotations.staticRules = [
+	'/':                              ['permitAll'],
+	'/index':                         ['permitAll'],
+	'/index.gsp':                     ['permitAll'],
+	'/**/js/**':                      ['permitAll'],
+	'/**/css/**':                     ['permitAll'],
+	'/**/images/**':                  ['permitAll'],
+	'/**/favicon.ico':                ['permitAll']
+]
+grails.plugin.springsecurity.logout.postOnly = false
+//grails.plugin.springsecurity.useSecurityEventListener = true
+grails.plugin.springsecurity.roleHierarchy = '''
+   ROLE_ADMIN > ROLE_USER
+'''
+
+grails.gorm.default.mapping = {
+    id generator:'identity'
+}
+
+grails {
+    gorm {
+        failOnError = true
+    }
+    mail {
+        host = "smtp.gmail.com"
+        port = 465
+        username = "myrsvplease2@gmail.com"
+        password = "Admin2K1"
+        props = ["mail.smtp.auth":"true",
+                "mail.smtp.socketFactory.port":"465",
+                "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
+                "mail.smtp.socketFactory.fallback":"false"]
+    }
+}
+
