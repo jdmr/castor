@@ -9,7 +9,10 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<title><g:layoutTitle default="Home"/> - <g:message code="project.name" /></title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="shortcut icon" href="${resource(dir: 'images', file: 'favicon.ico')}" type="image/x-icon">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="apple-mobile-web-app-title" content="${message(code:'project.name')}">
+		<link rel="icon" href="${resource(dir: 'images', file: 'favicon.png')}">
         <link rel="apple-touch-icon" sizes="144x144" href="${resource(dir: 'images', file: 'apple-touch-icon-144x144.png')}">
         <link rel="apple-touch-icon" sizes="120x120" href="${resource(dir: 'images', file: 'apple-touch-icon-120x120.png')}">
         <link rel="apple-touch-icon" sizes="114x114" href="${resource(dir: 'images', file: 'apple-touch-icon-114x114.png')}">
@@ -33,25 +36,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="${createLink(uri:'/')}" class="navbar-brand"><g:message code="project.name" /></a>
+                    <a href="${createLink(uri:'/')}" class="navbar-brand"><img src="${resource(dir: 'images', file: 'iRSVPed-logo.png')}" alt="${message(code: 'project.name')}" /></a>
                 </div>
                 <nav class="collapse navbar-collapse castor-navbar-collapse" role="navigation">
                     <ul class="nav navbar-nav">
-                        <li>
-                            <a href="../getting-started">Getting started</a>
-                        </li>
-                        <li>
-                            <a href="../css">CSS</a>
-                        </li>
-                        <li class="active">
-                            <a href="../components">Components</a>
-                        </li>
-                        <li>
-                            <a href="../javascript">JavaScript</a>
-                        </li>
-                        <li>
-                            <a href="../customize">Customize</a>
-                        </li>
+                        <li <g:if test="${request.requestURI == '/' || request.getRequestURI().startsWith("/home")}">class="active"</g:if>><a href="${createLink(uri:'/home')}"><g:message code="default.home.label" /></a></li>
+                        <li <g:if test="${request.getRequestURI().startsWith("/event")}">class="active"</g:if>><a href="${createLink(controller:'event')}"><g:message code="event.list.label" /></a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
@@ -67,8 +57,10 @@
 
 		<footer role="contentinfo">
             <div class="container">
-                <div class="col-sm-12">
-                    <p><a href="http://jdmendoza.blogspot.com">&copy; <g:formatDate format="yyyy" date="${new Date()}"/> David Mendoza</a></p>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p><a href="http://jdmendoza.blogspot.com">&copy; <g:formatDate format="yyyy" date="${new Date()}"/> David Mendoza</a></p>
+                    </div>
                 </div>
             </div>
 		</footer>
