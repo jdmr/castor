@@ -116,8 +116,8 @@ log4j = {
            'net.sf.ehcache.hibernate'
 
     debug  'grails.app',
-           'com.the6hours', 'grails.app.taglib.com.the6hours' //,
-           //'org.springframework.security'
+           'com.the6hours', 'grails.app.taglib.com.the6hours' ,
+           'org.springframework.security'
 //    'org.hibernate.SQL'
 
 //    trace  'org.hibernate.type'

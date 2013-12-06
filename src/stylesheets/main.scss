@@ -17,5 +17,15 @@ body {
   .navbar-brand {
     padding: 0 15px 0 0;
   }
+
+  #login-popup {
+    position: relative;
+    background: #fafafa;
+    padding: 20px;
+    width: auto;
+    max-width: 500px;
+    margin: 20px auto;
+    color: #333;
+  }
 }
 
