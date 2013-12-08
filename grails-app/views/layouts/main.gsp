@@ -42,9 +42,15 @@
                     <ul class="nav navbar-nav navbar-right" id="nav-options">
                         <li <g:if test="${request.requestURI == '/' || request.getRequestURI().startsWith("/home")}">class="active"</g:if>><a href="${createLink(uri:'/home')}"><g:message code="default.home.label" /></a></li>
                         <li <g:if test="${request.getRequestURI().startsWith("/event")}">class="active"</g:if>><a href="${createLink(controller:'event')}"><g:message code="event.list.label" /></a></li>
+                        <sec:ifAllGranted roles="ROLE_USER">
+                            <li <g:if test="${request.getRequestURI().startsWith("/mine")}">class="active"</g:if>><a href="${createLink(controller:'mine')}">My Events</a></li>
+                        </sec:ifAllGranted>
+                        <sec:ifAllGranted roles="ROLE_ADMIN">
+                            <li <g:if test="${request.getRequestURI().startsWith("/admin")}">class="active"</g:if>><a href="${createLink(controller:'admin')}">Admin</a></li>
+                        </sec:ifAllGranted>
                         <li id="login-li">
                             <sec:ifLoggedIn>
-                                <a href="#"><sec:username/></a>
+                                <a href="${createLink(controller: 'profile', action:'edit')}"><sec:username/></a>
                             </sec:ifLoggedIn>
                             <sec:ifNotLoggedIn>
                                 <a href="#login-popup" id="loginLink"><g:message code="login.label" /></a>
@@ -122,7 +128,7 @@
                             if (data.username) {
                                 form[0].reset();
                                 $('#loginMessage').empty();
-                                $('#login-li').html('<a href="${request.contextPath}/profile">'+data.username+'</a>');
+                                $('#login-li').html('<a href="${createLink(controller: 'profile', action: 'edit')}">'+data.username+'</a>');
                                 $('#nav-options').append('<li><a href="${request.contextPath}/logout">${message(code: "logout.label")}</a>');
                                 console.log("successfully logged in");
                                 $.magnificPopup.close();
@@ -131,9 +137,9 @@
                             }
                         });
 
-                        request.fail(function(jqXHR, textStatus) {
-                            console.log("Could not log in " + textStatus);
-                            $('#loginMessage').html("<span class='alert alert-error'>" + textStatus + '</span>');
+                        request.fail(function(jqXHR, result) {
+                            console.log("Could not log in " + reesult);
+                            $('#loginMessage').html("<span class='alert alert-danger'>" + result.error + '</span>');
                         });
                     });
                 });
