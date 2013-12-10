@@ -50,7 +50,7 @@
                         </sec:ifAllGranted>
                         <sec:ifNotLoggedIn>
                             <li id="login-li"><a href="#login-popup" id="loginLink"><g:message code="login.label" /></a></li>
-                            <li id="signup-li"><a href="#login-popup" id="signupLink"><g:message code="signup.label" /></a></li>
+                            <li id="signup-li"><a href="#login-popup" id="signupMenuLink"><g:message code="signup.label" /></a></li>
                         </sec:ifNotLoggedIn>
                         <sec:ifLoggedIn>
                             <li><g:link controller='profile' action="edit"><sec:username /></g:link></li>
@@ -142,7 +142,25 @@
             <script type="text/javascript">
                 $(function() {
                     $('#loginLink').magnificPopup({
-                        type:'inline'
+                        type:'inline',
+                        midClick: true,
+                        callbacks: {
+                            open: function() {
+                                $('#signupDiv').hide();
+                                $('#ajaxLoginForm').show();
+                            }
+                        }
+                    });
+
+                    $('#signupMenuLink').magnificPopup({
+                        type:'inline',
+                        midClick: true,
+                        callbacks: {
+                            open: function() {
+                                $('#ajaxLoginForm').hide();
+                                $('#signupDiv').show();
+                            }
+                        }
                     });
 
                     $('#authAjax').click(function(e) {
@@ -164,6 +182,7 @@
                                 $('#loginMessage').html('<div class="alert alert-success">Welcome back!</div>');
                                 $('#login-li').before('<li><a href="${createLink(controller: 'mine')}">${message(code: "mine.list.label")}</a>');
                                 $('#login-li').html('<a href="${createLink(controller: 'profile', action: 'edit')}">'+data.username+'</a>');
+                                $('#signup-li').hide();
                                 $('#nav-options').append('<li><a href="${createLink(controller:'logout')}">${message(code: "logout.label")}</a>');
                                 $.magnificPopup.close();
                             } else {
@@ -224,12 +243,9 @@
                     });
 
                     $('#signupButton').click(function(e) {
-                        console.log('Preventing default');
                         e.preventDefault();
-                        console.log("Updating signupMessage");
                         $('#signupMessage').html('${message(code:'sending.signup.message')}').show();
 
-                        console.log("Sending form");
                         var form = $('#signupForm');
                         var request = $.ajax({
                             type: 'post'
@@ -239,11 +255,9 @@
                             , dataType : 'json'
                         });
 
-                        console.log("Evaluating done");
                         request.done(function(data) {
                             console.log("Done!");
                             if (data.error) {
-                                console.log("Error");
                                 $('#signupMessage').html("<div class='alert alert-danger' style='margin: 0;'>"+data.error+"</div>");
                                 if (data.forgotLink) {
                                     $('#forgotLink').click(function(e) {
@@ -257,13 +271,11 @@
                                 }
                                 $('#sname').focus();
                             } else {
-                                console.log("Success! "+data.success);
                                 $('#signupMessage').html("<div class='alert alert-success' style='margin: 0;'>"+data.success+"</div>");
-                                console.log("Form reset");
                                 form[0].reset();
-                                console.log("updating nav");
                                 $('#login-li').before('<li><a href="${createLink(controller: 'mine')}">${message(code: "mine.list.label")}</a>');
                                 $('#login-li').html('<a href="${createLink(controller: 'profile', action: 'edit')}">'+data.username+'</a>');
+                                $('#signup-li').hide();
                                 $('#nav-options').append('<li><a href="${createLink(controller:'logout')}">${message(code: "logout.label")}</a>');
                                 setTimeout(function() {
                                     $.magnificPopup.close();
@@ -272,7 +284,6 @@
                         });
 
                         request.fail(function(jqXHR, result) {
-                            console.log("FAIL "+ result);
                             $('#signupMessage').html("<span class='alert alert-danger'>Could not reset credentials. Please try again later.</span>");
                         });
 
