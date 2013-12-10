@@ -21,15 +21,22 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-
 package castor
 
-import grails.plugin.springsecurity.annotation.Secured
-import grails.transaction.Transactional
+class Message {
+    String name
+    String subject
+    String content
+    Date dateCreated
+    Date lastUpdated
 
-@Secured('ROLE_ADMIN')
-@Transactional(readOnly = true)
-class AdminController {
+    static constraints = {
+        name blank: false, unique: true
+        content maxSize: 4000
+    }
 
-    def index() {}
+    static mapping = {
+        table 'messages'
+    }
 }
+

@@ -55,5 +55,22 @@ body {
   .content {
     background-color:rgba(0,0,0,0.3);
   }
+
+  .castor-nav {
+    @media(min-width: 768px) and (max-width: 991px) {
+      font-size: 0.75em;
+    }
+  }
+
+  #signup-li {
+    a {
+      background-color: darken(#428bca, 10%);
+      color: darken(#fff, 10%);
+      &:hover, &:focus {
+        background-color: #428bca;
+        color: #fff;
+      }
+    }
+  }
 }
 

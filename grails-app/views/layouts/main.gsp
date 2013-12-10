@@ -43,20 +43,17 @@
                         <li <g:if test="${request.requestURI == '/' || request.getRequestURI().startsWith("/home")}">class="active"</g:if>><a href="${createLink(uri:'/home')}"><g:message code="default.home.label" /></a></li>
                         <li <g:if test="${request.getRequestURI().startsWith("/event")}">class="active"</g:if>><a href="${createLink(controller:'event')}"><g:message code="event.list.label" /></a></li>
                         <sec:ifAllGranted roles="ROLE_USER">
-                            <li <g:if test="${request.getRequestURI().startsWith("/mine")}">class="active"</g:if>><a href="${createLink(controller:'mine')}">My Events</a></li>
+                            <li <g:if test="${request.getRequestURI().startsWith("/mine")}">class="active"</g:if>><a href="${createLink(controller:'mine')}"><g:message code="mine.list.label" /></a></li>
                         </sec:ifAllGranted>
                         <sec:ifAllGranted roles="ROLE_ADMIN">
-                            <li <g:if test="${request.getRequestURI().startsWith("/admin")}">class="active"</g:if>><a href="${createLink(controller:'admin')}">Admin</a></li>
+                            <li <g:if test="${request.getRequestURI().startsWith("/admin")}">class="active"</g:if>><a href="${createLink(controller:'admin')}"><g:message code="admin.label" /></a></li>
                         </sec:ifAllGranted>
-                        <li id="login-li">
-                            <sec:ifLoggedIn>
-                                <a href="${createLink(controller: 'profile', action:'edit')}"><sec:username/></a>
-                            </sec:ifLoggedIn>
-                            <sec:ifNotLoggedIn>
-                                <a href="#login-popup" id="loginLink"><g:message code="login.label" /></a>
-                            </sec:ifNotLoggedIn>
-                        </li>
+                        <sec:ifNotLoggedIn>
+                            <li id="login-li"><a href="#login-popup" id="loginLink"><g:message code="login.label" /></a></li>
+                            <li id="signup-li"><a href="#login-popup" id="signupLink"><g:message code="signup.label" /></a></li>
+                        </sec:ifNotLoggedIn>
                         <sec:ifLoggedIn>
+                            <li><g:link controller='profile' action="edit"><sec:username /></g:link></li>
                             <li><g:link controller='logout'><g:message code="logout.label" /></g:link></li>
                         </sec:ifLoggedIn>
                     </ul>
@@ -69,9 +66,10 @@
             <sec:ifNotLoggedIn>
                 <div id="login-popup" class="mfp-hide">
                     <form name="ajaxLoginForm" id="ajaxLoginForm" action='${request.contextPath}/j_spring_security_check' method='POST' role="form">
+                        <legend>Login</legend>
                         <div class="form-group">
                             <label for='username'><g:message code="email.label" /></label>
-                            <input type='text' class='form-control' name='j_username' id='username' placeholder="Enter email" />
+                            <input type='email' class='form-control' name='j_username' id='username' placeholder="Enter email" />
                         </div>
                         <div class="form-group">
                             <label for='password'><g:message code="password.label"/></label>
@@ -90,6 +88,42 @@
                         <div id='loginMessage' style="display: none;">
                         </div>
                     </form>
+                    <div id="forgotDiv" style="display: none;">
+                        <form name="forgotForm" id="forgotForm" action='${createLink(controller: 'profile', action: 'forgot')}' method='POST' role="form">
+                            <legend>Forgot Credentials</legend>
+                            <div class="form-group">
+                                <label for='email'><g:message code="email.label" /></label>
+                                <input type='email' class='form-control' name='email' id='email' placeholder="Enter email" />
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" id="forgotButton" class="btn btn-primary"><g:message code="request.new.password.label" /></button>
+                            </div>
+                            <div id='forgotMessage' style="display: none;">
+                            </div>
+                        </form>
+                    </div>
+                    <div id="signupDiv" style="display: none;">
+                        <form name="signupForm" id="signupForm" action='${createLink(controller: 'signup', action: 'free', params: [ajax: true])}' method='POST' role="form">
+                            <legend>Sign Up</legend>
+                            <div class="form-group">
+                                <label for='sname'><g:message code="name.label" /></label>
+                                <input type='text' class='form-control' name='name' id='sname' placeholder="Enter Full Name" />
+                            </div>
+                            <div class="form-group">
+                                <label for='susername'><g:message code="email.label" /></label>
+                                <input type='email' class='form-control' name='username' id='susername' placeholder="Enter email" />
+                            </div>
+                            <div class="form-group">
+                                <label for='spassword'><g:message code="password.label"/></label>
+                                <input type='password' class='form-control' name='password' id='spassword' />
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" id="signupButton" class="btn btn-primary"><g:message code="signup.label" /></button>
+                            </div>
+                            <div id='signupMessage' style="display: none;">
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </sec:ifNotLoggedIn>
         </div>
@@ -127,20 +161,121 @@
                         request.done(function(data) {
                             if (data.username) {
                                 form[0].reset();
-                                $('#loginMessage').empty();
+                                $('#loginMessage').html('<div class="alert alert-success">Welcome back!</div>');
+                                $('#login-li').before('<li><a href="${createLink(controller: 'mine')}">${message(code: "mine.list.label")}</a>');
                                 $('#login-li').html('<a href="${createLink(controller: 'profile', action: 'edit')}">'+data.username+'</a>');
-                                $('#nav-options').append('<li><a href="${request.contextPath}/logout">${message(code: "logout.label")}</a>');
-                                console.log("successfully logged in");
+                                $('#nav-options').append('<li><a href="${createLink(controller:'logout')}">${message(code: "logout.label")}</a>');
                                 $.magnificPopup.close();
                             } else {
-                                $('#loginMessage').html("<div class='alert alert-danger' style='margin: 0;'>" + '<g:message code="wrong.username.password.message" />' + '</div>');
+                                $('#loginMessage').html("<div class='alert alert-danger' style='margin: 0;'><g:message code="wrong.username.password.message" /></div>");
+                                $('#forgotPasswordLink').click(function(e) {
+                                    e.preventDefault();
+                                    $('#ajaxLoginForm').toggle("slide", {direction: "right"}, function() {
+                                        $('#forgotDiv').toggle("slide", function() {
+                                            $("#email").focus();
+                                        });
+                                    });
+                                });
                             }
                         });
 
                         request.fail(function(jqXHR, result) {
-                            console.log("Could not log in " + reesult);
                             $('#loginMessage').html("<span class='alert alert-danger'>" + result.error + '</span>');
                         });
+                    });
+
+                    $('#forgotButton').click(function(e) {
+                        e.preventDefault();
+                        $('#forgotMessage').html('${message(code:'sending.forgot.message')}').show();
+
+                        var form = $('#forgotForm');
+                        var request = $.ajax({
+                            type: 'post'
+                            , url : form.attr('action')
+                            , data : form.serialize()
+                            , async : false
+                            , dataType : 'json'
+                        });
+
+                        request.done(function(data) {
+                            if (data.error) {
+                                $('#forgotMessage').html("<div class='alert alert-danger' style='margin: 0;'>"+data.error+"</div>");
+                                $('#signupLink').click(function(e) {
+                                    e.preventDefault();
+                                    $('#forgotDiv').toggle('slide', {direction: 'left'}, function () {
+                                        $('#signupDiv').toggle('slide', {direction: 'right'}, function() {
+                                            $('#sname').focus();
+                                        });
+                                    });
+                                });
+                            } else {
+                                $('#forgotMessage').html("<div class='alert alert-success' style='margin: 0;'>"+data.success+"</div>");
+                                form[0].reset();
+                                setTimeout(function() {
+                                    $.magnificPopup.close();
+                                }, 2000);
+                            }
+                        });
+
+                        request.fail(function(jqXHR, result) {
+                            $('#forgotMessage').html("<span class='alert alert-danger'>Could not reset credentials. Please try again later.</span>");
+                        });
+
+                    });
+
+                    $('#signupButton').click(function(e) {
+                        console.log('Preventing default');
+                        e.preventDefault();
+                        console.log("Updating signupMessage");
+                        $('#signupMessage').html('${message(code:'sending.signup.message')}').show();
+
+                        console.log("Sending form");
+                        var form = $('#signupForm');
+                        var request = $.ajax({
+                            type: 'post'
+                            , url : form.attr('action')
+                            , data : form.serialize()
+                            , async : false
+                            , dataType : 'json'
+                        });
+
+                        console.log("Evaluating done");
+                        request.done(function(data) {
+                            console.log("Done!");
+                            if (data.error) {
+                                console.log("Error");
+                                $('#signupMessage').html("<div class='alert alert-danger' style='margin: 0;'>"+data.error+"</div>");
+                                if (data.forgotLink) {
+                                    $('#forgotLink').click(function(e) {
+                                        e.preventDefault();
+                                        $('#signupForm').toggle("slide", {direction: "right"}, function() {
+                                            $('#forgotDiv').toggle("slide", function() {
+                                                $("#email").focus();
+                                            });
+                                        });
+                                    });
+                                }
+                                $('#sname').focus();
+                            } else {
+                                console.log("Success! "+data.success);
+                                $('#signupMessage').html("<div class='alert alert-success' style='margin: 0;'>"+data.success+"</div>");
+                                console.log("Form reset");
+                                form[0].reset();
+                                console.log("updating nav");
+                                $('#login-li').before('<li><a href="${createLink(controller: 'mine')}">${message(code: "mine.list.label")}</a>');
+                                $('#login-li').html('<a href="${createLink(controller: 'profile', action: 'edit')}">'+data.username+'</a>');
+                                $('#nav-options').append('<li><a href="${createLink(controller:'logout')}">${message(code: "logout.label")}</a>');
+                                setTimeout(function() {
+                                    $.magnificPopup.close();
+                                }, 2000);
+                            }
+                        });
+
+                        request.fail(function(jqXHR, result) {
+                            console.log("FAIL "+ result);
+                            $('#signupMessage').html("<span class='alert alert-danger'>Could not reset credentials. Please try again later.</span>");
+                        });
+
                     });
                 });
             </script>

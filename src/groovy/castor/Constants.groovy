@@ -24,12 +24,7 @@
 
 package castor
 
-import grails.plugin.springsecurity.annotation.Secured
-import grails.transaction.Transactional
-
-@Secured('ROLE_ADMIN')
-@Transactional(readOnly = true)
-class AdminController {
-
-    def index() {}
+class Constants {
+    public static final String FORGOT_MESSAGE = 'FORGOT_MESSAGE'
+    public static final String SIGN_UP = 'SIGN_UP'
 }

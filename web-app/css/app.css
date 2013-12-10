@@ -54,3 +54,12 @@ body {
     color: #333; }
   body .content {
     background-color: rgba(0, 0, 0, 0.3); }
+  @media (min-width: 768px) and (max-width: 991px) {
+    body .castor-nav {
+      font-size: 0.75em; } }
+  body #signup-li a {
+    background-color: #3071a9;
+    color: #e6e6e6; }
+    body #signup-li a:hover, body #signup-li a:focus {
+      background-color: #428bca;
+      color: #fff; }
