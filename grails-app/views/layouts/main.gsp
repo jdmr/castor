@@ -165,128 +165,132 @@
 
                     $('#authAjax').click(function(e) {
                         e.preventDefault();
-                        $('#loginMessage').html('${message(code:'sending.message')}').show();
+                        $('#loginMessage').html('${message(code:'sending.message')}').show(function() {
+                            var form = $('#ajaxLoginForm');
+                            var request = $.ajax({
+                                type: 'post'
+                                , url : form.attr('action')
+                                , data : form.serialize()
+                                , async : false
+                                , dataType : 'json'
+                            });
 
-                        var form = $('#ajaxLoginForm');
-                        var request = $.ajax({
-                            type: 'post'
-                            , url : form.attr('action')
-                            , data : form.serialize()
-                            , async : false
-                            , dataType : 'json'
-                        });
-
-                        request.done(function(data) {
-                            if (data.username) {
-                                form[0].reset();
-                                $('#loginMessage').html('<div class="alert alert-success">Welcome back!</div>');
-                                $('#login-li').before('<li><a href="${createLink(controller: 'mine')}">${message(code: "mine.list.label")}</a>');
-                                $('#login-li').html('<a href="${createLink(controller: 'profile', action: 'edit')}">'+data.username+'</a>');
-                                $('#signup-li').hide();
-                                $('#nav-options').append('<li><a href="${createLink(controller:'logout')}">${message(code: "logout.label")}</a>');
-                                $.magnificPopup.close();
-                            } else {
-                                $('#loginMessage').html("<div class='alert alert-danger' style='margin: 0;'><g:message code="wrong.username.password.message" /></div>");
-                                $('#forgotPasswordLink').click(function(e) {
-                                    e.preventDefault();
-                                    $('#ajaxLoginForm').toggle("slide", {direction: "right"}, function() {
-                                        $('#forgotDiv').toggle("slide", function() {
-                                            $("#email").focus();
-                                        });
-                                    });
-                                });
-                            }
-                        });
-
-                        request.fail(function(jqXHR, result) {
-                            $('#loginMessage').html("<span class='alert alert-danger'>" + result.error + '</span>');
-                        });
-                    });
-
-                    $('#forgotButton').click(function(e) {
-                        e.preventDefault();
-                        $('#forgotMessage').html('${message(code:'sending.forgot.message')}').show();
-
-                        var form = $('#forgotForm');
-                        var request = $.ajax({
-                            type: 'post'
-                            , url : form.attr('action')
-                            , data : form.serialize()
-                            , async : false
-                            , dataType : 'json'
-                        });
-
-                        request.done(function(data) {
-                            if (data.error) {
-                                $('#forgotMessage').html("<div class='alert alert-danger' style='margin: 0;'>"+data.error+"</div>");
-                                $('#signupLink').click(function(e) {
-                                    e.preventDefault();
-                                    $('#forgotDiv').toggle('slide', {direction: 'left'}, function () {
-                                        $('#signupDiv').toggle('slide', {direction: 'right'}, function() {
-                                            $('#sname').focus();
-                                        });
-                                    });
-                                });
-                            } else {
-                                $('#forgotMessage').html("<div class='alert alert-success' style='margin: 0;'>"+data.success+"</div>");
-                                form[0].reset();
-                                setTimeout(function() {
+                            request.done(function(data) {
+                                if (data.username) {
+                                    form[0].reset();
+                                    $('#loginMessage').html('<div class="alert alert-success">Welcome back!</div>');
+                                    $('#login-li').before('<li><a href="${createLink(controller: 'mine')}">${message(code: "mine.list.label")}</a>');
+                                    $('#login-li').html('<a href="${createLink(controller: 'profile', action: 'edit')}">'+data.username+'</a>');
+                                    $('#signup-li').hide();
+                                    $('#nav-options').append('<li><a href="${createLink(controller:'logout')}">${message(code: "logout.label")}</a>');
                                     $.magnificPopup.close();
-                                }, 2000);
-                            }
-                        });
-
-                        request.fail(function(jqXHR, result) {
-                            $('#forgotMessage').html("<span class='alert alert-danger'>Could not reset credentials. Please try again later.</span>");
-                        });
-
-                    });
-
-                    $('#signupButton').click(function(e) {
-                        e.preventDefault();
-                        $('#signupMessage').html('${message(code:'sending.signup.message')}').show();
-
-                        var form = $('#signupForm');
-                        var request = $.ajax({
-                            type: 'post'
-                            , url : form.attr('action')
-                            , data : form.serialize()
-                            , async : false
-                            , dataType : 'json'
-                        });
-
-                        request.done(function(data) {
-                            console.log("Done!");
-                            if (data.error) {
-                                $('#signupMessage').html("<div class='alert alert-danger' style='margin: 0;'>"+data.error+"</div>");
-                                if (data.forgotLink) {
-                                    $('#forgotLink').click(function(e) {
+                                } else {
+                                    $('#loginMessage').html("<div class='alert alert-danger' style='margin: 0;'><g:message code="wrong.username.password.message" /></div>");
+                                    $('#forgotPasswordLink').click(function(e) {
                                         e.preventDefault();
-                                        $('#signupForm').toggle("slide", {direction: "right"}, function() {
+                                        $('#ajaxLoginForm').toggle("slide", {direction: "right"}, function() {
                                             $('#forgotDiv').toggle("slide", function() {
                                                 $("#email").focus();
                                             });
                                         });
                                     });
                                 }
-                                $('#sname').focus();
-                            } else {
-                                $('#signupMessage').html("<div class='alert alert-success' style='margin: 0;'>"+data.success+"</div>");
-                                form[0].reset();
-                                $('#login-li').before('<li><a href="${createLink(controller: 'mine')}">${message(code: "mine.list.label")}</a>');
-                                $('#login-li').html('<a href="${createLink(controller: 'profile', action: 'edit')}">'+data.username+'</a>');
-                                $('#signup-li').hide();
-                                $('#nav-options').append('<li><a href="${createLink(controller:'logout')}">${message(code: "logout.label")}</a>');
-                                setTimeout(function() {
-                                    $.magnificPopup.close();
-                                }, 2000);
-                            }
-                        });
+                            });
 
-                        request.fail(function(jqXHR, result) {
-                            $('#signupMessage').html("<span class='alert alert-danger'>Could not reset credentials. Please try again later.</span>");
-                        });
+                            request.fail(function(jqXHR, result) {
+                                $('#loginMessage').html("<span class='alert alert-danger'>" + result.error + '</span>');
+                            });
 
+                        }); // show
+
+                    }); // click
+
+                    $('#forgotButton').click(function(e) {
+                        e.preventDefault();
+                        $('#forgotMessage').html('<div class="alert alert-info">${message(code:'sending.forgot.message')}</div>').show(function() {
+                            var form = $('#forgotForm');
+                            var request = $.ajax({
+                                type: 'post'
+                                , url : form.attr('action')
+                                , data : form.serialize()
+                                , async : false
+                                , dataType : 'json'
+                            });
+
+                            request.done(function(data) {
+                                if (data.error) {
+                                    $('#forgotMessage').html("<div class='alert alert-danger' style='margin: 0;'>"+data.error+"</div>");
+                                    $('#signupLink').click(function(e) {
+                                        e.preventDefault();
+                                        $('#forgotDiv').toggle('slide', {direction: 'left'}, function () {
+                                            $('#signupDiv').toggle('slide', {direction: 'right'}, function() {
+                                                $('#sname').focus();
+                                            });
+                                        });
+                                    });
+                                } else {
+                                    $('#forgotMessage').html("<div class='alert alert-success' style='margin: 0;'>"+data.success+"</div>");
+                                    form[0].reset();
+                                    setTimeout(function() {
+                                        $.magnificPopup.close();
+                                        $('#forgotDiv').hide();
+                                        $('#forgotMessage').hide();
+                                        $('#loginMessage').hide();
+                                    }, 3000);
+                                }
+                            });
+
+                            request.fail(function(jqXHR, result) {
+                                $('#forgotMessage').html("<span class='alert alert-danger'>Could not reset credentials. Please try again later.</span>");
+                            });
+                        }); // show
+                    }); // click
+
+                    $('#signupButton').click(function(e) {
+                        e.preventDefault();
+                        $('#signupMessage').html('${message(code:'sending.signup.message')}').show(function() {
+                            var form = $('#signupForm');
+                            var request = $.ajax({
+                                type: 'post'
+                                , url : form.attr('action')
+                                , data : form.serialize()
+                                , async : false
+                                , dataType : 'json'
+                            });
+
+                            request.done(function(data) {
+                                console.log("Done!");
+                                if (data.error) {
+                                    $('#signupMessage').html("<div class='alert alert-danger' style='margin: 0;'>"+data.error+"</div>");
+                                    if (data.forgotLink) {
+                                        $('#forgotLink').click(function(e) {
+                                            e.preventDefault();
+                                            $('#signupForm').toggle("slide", {direction: "right"}, function() {
+                                                $('#forgotDiv').toggle("slide", function() {
+                                                    $("#email").focus();
+                                                });
+                                            });
+                                        });
+                                    }
+                                    $('#sname').focus();
+                                } else {
+                                    $('#signupMessage').html("<div class='alert alert-success' style='margin: 0;'>"+data.success+"</div>");
+                                    form[0].reset();
+                                    $('#login-li').before('<li><a href="${createLink(controller: 'mine')}">${message(code: "mine.list.label")}</a>');
+                                    $('#login-li').html('<a href="${createLink(controller: 'profile', action: 'edit')}">'+data.username+'</a>');
+                                    $('#signup-li').hide();
+                                    $('#nav-options').append('<li><a href="${createLink(controller:'logout')}">${message(code: "logout.label")}</a>');
+                                    setTimeout(function() {
+                                        $.magnificPopup.close();
+                                    }, 2000);
+                                }
+                            });
+
+                            request.fail(function(jqXHR, result) {
+                                $('#signupMessage').html("<span class='alert alert-danger'>Could not reset credentials. Please try again later.</span>");
+                            });
+
+                        });
                     });
                 });
             </script>

@@ -42,6 +42,10 @@ body {
   background-size: cover;
   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/bg.jpg', sizingMethod='scale');
   -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='../images/bg.jpg', sizingMethod='scale')"; }
+  body a {
+    color: #92bce0; }
+    body a:hover, body a:focus {
+      color: #b9d4ec; }
   body .navbar-brand {
     padding: 0 15px 0 0; }
   body #login-popup {
@@ -54,6 +58,29 @@ body {
     color: #333; }
   body .content {
     background-color: rgba(0, 0, 0, 0.3); }
+    body .content .app-sidenav {
+      margin: 20px 0;
+      padding: 10px 0;
+      text-shadow: 0 1px 0 #333;
+      background-color: rgba(200, 200, 200, 0.5);
+      border-radius: 5px; }
+      body .content .app-sidenav li.active a {
+        font-weight: bold;
+        color: #FAFAFA;
+        background-color: rgba(100, 100, 100, 0.8); }
+      body .content .app-sidenav li a {
+        color: #fff; }
+        body .content .app-sidenav li a:hover {
+          color: #FAFAFA;
+          background-color: rgba(200, 200, 200, 0.8); }
+    body .content .table {
+      background-color: rgba(50, 50, 50, 0.8); }
+    body .content .table-striped > tbody > tr:nth-child(odd) > td, body .content .table-striped > tbody > tr:nth-child(odd) > th {
+      background-color: rgba(100, 100, 100, 0.5); }
+    body .content .table > thead > tr > th, body .content .table > tbody > tr > th, body .content .table > tfoot > tr > th, body .content .table > thead > tr > td, body .content .table > tbody > tr > td, body .content .table > tfoot > tr > td {
+      border-top: 1px solid rgba(200, 200, 200, 0.5); }
+    body .content .table > thead > tr > th {
+      border-bottom: 2px solid rgba(254, 254, 254, 0.5); }
   @media (min-width: 768px) and (max-width: 991px) {
     body .castor-nav {
       font-size: 0.75em; } }

@@ -75,7 +75,7 @@ class ProfileController {
             String content = forgot.content
             content = content.replaceAll('@@NAME@@', user.name)
             content = content.replaceAll('@@USERNAME@@', user.username)
-            content = content.replaceAll('@@PASSWORD@@', password)
+            content = content.replaceAll('@@PASSWORD@@', key)
 
             sendMail {
                 to user.username

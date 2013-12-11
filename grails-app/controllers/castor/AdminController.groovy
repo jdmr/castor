@@ -31,5 +31,7 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class AdminController {
 
-    def index() {}
+    def index() {
+        redirect(controller: 'user')
+    }
 }
