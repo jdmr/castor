@@ -8,55 +8,60 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<a href="#list-message" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-			</ul>
-		</div>
-		<div id="list-message" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-				<div class="message" role="status">${flash.message}</div>
-			</g:if>
-			<table>
-			<thead>
-					<tr>
-					
-						<g:sortableColumn property="name" title="${message(code: 'message.name.label', default: 'Name')}" />
-					
-						<g:sortableColumn property="content" title="${message(code: 'message.content.label', default: 'Content')}" />
-					
-						<g:sortableColumn property="dateCreated" title="${message(code: 'message.dateCreated.label', default: 'Date Created')}" />
-					
-						<g:sortableColumn property="lastUpdated" title="${message(code: 'message.lastUpdated.label', default: 'Last Updated')}" />
-					
-						<g:sortableColumn property="subject" title="${message(code: 'message.subject.label', default: 'Subject')}" />
-					
-					</tr>
-				</thead>
-				<tbody>
-				<g:each in="${messageInstanceList}" status="i" var="messageInstance">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
-						<td><g:link action="show" id="${messageInstance.id}">${fieldValue(bean: messageInstance, field: "name")}</g:link></td>
-					
-						<td>${fieldValue(bean: messageInstance, field: "content")}</td>
-					
-						<td><g:formatDate date="${messageInstance.dateCreated}" /></td>
-					
-						<td><g:formatDate date="${messageInstance.lastUpdated}" /></td>
-					
-						<td>${fieldValue(bean: messageInstance, field: "subject")}</td>
-					
-					</tr>
-				</g:each>
-				</tbody>
-			</table>
-			<div class="pagination">
-				<g:paginate total="${messageInstanceCount ?: 0}" />
-			</div>
-		</div>
+    <div class="row content">
+        <div class="col-sm-3">
+            <div role="navigation">
+                <ul class="nav app-sidenav">
+                    <li><a href="${createLink(controller:'user')}">Users</a></li>
+                    <li class="active"><a href="${createLink(controller:'message')}">Messages</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9">
+            <div id="list-user" role="main">
+                <h1><g:message code="default.list.label" args="[entityName]"/></h1>
+                <g:if test="${flash.message}">
+                    <div class="alert alert-success" role="status">${flash.message}</div>
+                </g:if>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+
+                            <g:sortableColumn property="name" title="${message(code: 'message.name.label', default: 'Name')}" />
+
+                            <g:sortableColumn property="subject" title="${message(code: 'message.subject.label', default: 'Subject')}" />
+
+                            <g:sortableColumn property="content" title="${message(code: 'message.content.label', default: 'Content')}" />
+
+                            <g:sortableColumn property="lastUpdated" title="${message(code: 'message.lastUpdated.label', default: 'Last Updated')}" />
+
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <g:each in="${messageInstanceList}" status="i" var="messageInstance">
+                            <tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
+
+                                <td><g:link action="show" id="${messageInstance.id}">${fieldValue(bean: messageInstance, field: "name")}</g:link></td>
+
+                                <td>${fieldValue(bean: messageInstance, field: "subject")}</td>
+
+                                <td>${raw(messageInstance.content)}</td>
+
+                                <td><g:formatDate date="${messageInstance.lastUpdated}" /></td>
+
+                            </tr>
+                        </g:each>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                <g:paginate total="${messageInstanceCount ?: 0}"/>
+            </div>
+
+        </div>
+    </div>
+
 	</body>
 </html>

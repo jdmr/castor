@@ -22,7 +22,7 @@
         <div id="list-user" role="main">
             <h1><g:message code="default.list.label" args="[entityName]"/></h1>
             <g:if test="${flash.message}">
-                <div class="message" role="status">${flash.message}</div>
+                <div class="alert alert-success" role="status">${flash.message}</div>
             </g:if>
             <div class="table-responsive">
                 <table class="table table-striped">
@@ -59,9 +59,7 @@
 
             </div>
 
-            <div class="pagination">
-                <g:paginate total="${userInstanceCount ?: 0}"/>
-            </div>
+            <g:paginate total="${userInstanceCount ?: 0}"/>
         </div>
 
     </div>

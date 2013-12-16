@@ -82,6 +82,10 @@ class UserController {
             return
         }
 
+        log.debug('Deleting roles first')
+        UserRole.removeAll(userInstance)
+
+        log.debug('Deleting user')
         userInstance.delete flush:true
 
         request.withFormat {
