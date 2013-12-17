@@ -60,7 +60,8 @@ grails.project.dependency.resolution = {
         compile ':cache:1.1.1'
         compile ":mail:1.0.1"
         compile ":twitter-bootstrap:3.0.2"
-        compile ":ckeditor:3.6.4.0"
+        //compile ":ckeditor:3.6.4.0"
+        //compile ":ckeditor:3.6.6.1.1"
         compile ':cloud-support:1.0.8'
         compile ":spring-security-core:2.0-RC2"
 

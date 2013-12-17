@@ -23,7 +23,7 @@
 		<g:message code="message.content.label" default="Content" />
 		
 	</label>
-	<g:textArea name="content" cols="40" rows="5" maxlength="4000" value="${messageInstance?.content}" class="form-control" />
+	<g:textArea name="content" cols="40" rows="5" maxlength="4000" value="${raw(messageInstance?.content)}" class="form-control wysiwyg" />
 
 </div>
 

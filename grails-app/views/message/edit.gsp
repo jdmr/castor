@@ -5,6 +5,7 @@
 		<meta name="layout" content="main">
 		<g:set var="entityName" value="${message(code: 'message.label', default: 'Message')}" />
 		<title><g:message code="default.edit.label" args="[entityName]" /></title>
+        <r:require module="wysiwyg" />
 	</head>
 	<body>
     <div class="row content">

@@ -22,6 +22,9 @@
         <!--[if lt IE 9]>
             <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <![endif]-->
+        <r:script disposition="head">
+            var URL_ROOT = '${request.contextPath}';
+        </r:script>
         <r:require module='base'/>
         <g:layoutHead/>
         <r:layoutResources />
@@ -60,7 +63,7 @@
                 </nav>
             </div>
         </header>
-        <div class="container" id="content">
+        <div class="container">
             <g:layoutBody/>
 
             <sec:ifNotLoggedIn>
