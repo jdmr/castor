@@ -17,7 +17,7 @@
                 <g:message code="event.seats.label" default="Seats"/>
                 <span class="required-indicator">*</span>
             </label>
-            <input type="number" name="seats" id="seats" value="${eventInstance.seats}" min="0" step="1" style="text-align: right;" class="form-control" />
+            <input type="number" name="seats" id="seats" value="${eventInstance.seats}" min="0" step="1" class="form-control" />
             <span class="help-block">When this number is reached we'll send a message explaining there are no more spots available. 0 = Unlimited.</span>
         </div>
     </div>

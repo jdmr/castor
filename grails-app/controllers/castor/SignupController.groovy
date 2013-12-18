@@ -26,6 +26,8 @@ package castor
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.web.savedrequest.HttpSessionRequestCache
+import org.springframework.security.web.savedrequest.SavedRequest
 
 @Secured('permitAll')
 class SignupController {
@@ -77,6 +79,13 @@ class SignupController {
         if (params.ajax) {
             log.debug("Returning successful message")
             render([username: user.username, success: "Welcome ${user.name}!"] as JSON)
+        } else {
+            SavedRequest savedRequest = new HttpSessionRequestCache().getRequest(request, response)
+            if(savedRequest != null) {
+                redirect url: savedRequest.getRedirectUrl()
+            } else {
+                redirect uri: "/"
+            }
         }
     }
 
