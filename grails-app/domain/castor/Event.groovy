@@ -67,6 +67,14 @@ class Event implements Serializable {
                 ilike('description', x)
             }
         }
+
+        upcoming {
+            gt('date', new Date())
+        }
+
+        sorted {
+            order('date')
+        }
     }
 
 }

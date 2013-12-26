@@ -28,6 +28,7 @@
         <div class="row">
             <div class="col-sm-12">
                 <h2><a href="${createLink(action:'show', id:event.id)}">${event.name}</a></h2>
+                <p><g:formatDate date="${event.date}" format="EEE, MMM dd yyyy hh:mm zzz"/></p>
                 ${raw(event.description)}
             </div>
         </div>

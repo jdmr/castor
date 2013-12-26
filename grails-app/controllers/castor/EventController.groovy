@@ -19,9 +19,9 @@ class EventController {
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
         if (params.filter) {
-            respond Event.search(params.filter).list(params), model: [eventInstanceCount: Event.search(params.filter).count()]
+            respond Event.upcoming().sorted().search(params.filter).list(params), model: [eventInstanceCount: Event.upcoming().search(params.filter).count()]
         } else {
-            respond Event.list(params), model:[eventInstanceCount: Event.count()]
+            respond Event.upcoming().sorted().list(params), model:[eventInstanceCount: Event.upcoming().count()]
         }
     }
 

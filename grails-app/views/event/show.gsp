@@ -13,6 +13,7 @@
     <div class="row">
         <div class="col-sm-12">
             <h1>${eventInstance?.name}</h1>
+            <p><g:formatDate date="${eventInstance.date}" format="EEE, MMM dd yyyy hh:mm zzz"/></p>
             ${raw(eventInstance?.description)}
         </div>
     </div>
