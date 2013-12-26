@@ -47,11 +47,13 @@ class AdminController {
     }
 
     def event(Event eventInstance) {
-        respond eventInstance
+        def parties = Party.findAllByEvent(eventInstance)
+        return [eventInstance: eventInstance, parties: parties]
     }
 
     @Transactional
     def deleteEvent(Event eventInstance) {
+        Party.executeUpdate('delete Party p where p.event.id = :eventId', [eventId: eventInstance.id])
         eventInstance.delete(flush:true)
         flash.message = "Event ${eventInstance.name} has been deleted!"
         redirect action: 'events'

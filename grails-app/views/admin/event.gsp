@@ -54,6 +54,36 @@
                 ${raw(eventInstance?.description)}
             </div>
         </div>
+        <g:if test="${parties}">
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Seats</th>
+                        <th>Comments</th>
+                        <th>Created</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <g:each in="${parties}" var="party">
+                        <tr>
+                            <td>${party.fullName}</td>
+                            <td>${party.email}</td>
+                            <td>${party.phone}</td>
+                            <td>${party.seats}</td>
+                            <td>${party.comments}</td>
+                            <td>${party.dateCreated}</td>
+                        </tr>
+                    </g:each>
+                    
+                    </tbody>
+                </table>
+            </div>
+            
+        </g:if>
         <div class="row">
             <div class="col-sm-12">
                 <a href="${createLink(action: 'deleteEvent', id: eventInstance.id)}" class="btn btn-danger btn-lg" onclick="return confirm('Are you sure you want to delete this event?');"><i class="glyphicon glyphicon-trash"></i> Delete</a>
