@@ -81,6 +81,12 @@ class Event implements Serializable {
         sorted {
             order('date')
         }
+
+        mine { userId ->
+            member {
+                idEq(userId)
+            }
+        }
     }
 
 }

@@ -31,5 +31,16 @@ import grails.transaction.Transactional
 @Transactional(readOnly = true)
 class MineController {
 
-    def index() {}
+    def springSecurityService
+
+    def index(Integer max) {
+        User user = springSecurityService.currentUser
+        params.max = Math.min(max ?: 10, 100)
+        if (params.filter) {
+            respond Event.mine(user.id).upcoming().sorted().search(params.filter).list(params), model: [eventInstanceCount: Event.mine(user.id).upcoming().search(params.filter).count()]
+        } else {
+            respond Event.mine(user.id).upcoming().sorted().list(params), model:[eventInstanceCount: Event.mine(user.id).upcoming().count()]
+        }
+    }
+
 }
