@@ -65,6 +65,12 @@ class Event implements Serializable {
                 eq('code', filter)
                 ilike('name', x)
                 ilike('description', x)
+                member {
+                    ilike('name', x)
+                }
+                member {
+                    ilike('username', x)
+                }
             }
         }
 
