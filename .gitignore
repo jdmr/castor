@@ -21,4 +21,5 @@ stacktrace.log
 classes
 *.iml
 .sass-cache
-castor-config.groovy
+
+castor-config.properties
