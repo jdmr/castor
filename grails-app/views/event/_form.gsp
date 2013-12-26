@@ -1,5 +1,7 @@
 <%@ page import="castor.Event" %>
 
+<g:hiddenField name="code" value="${eventInstance?.code}" />
+<g:hiddenField name="member.id" value="${eventInstance?.member?.id}" />
 
 <div class="row">
     <div class="col-sm-6">
@@ -79,7 +81,7 @@
     <div class="col-sm-2">
         <div class="form-group ${hasErrors(bean: eventInstance, field: 'zip', 'has-error')} ">
             <label for="zip">
-                <g:message code="event.zip.label" default="Zip"/>
+                <g:message code="event.zip.label" default="ZIP Code"/>
 
             </label>
             <g:textField name="zip" value="${eventInstance?.zip}" class="form-control" />

@@ -58,4 +58,15 @@ class Event implements Serializable {
         return "${street}, ${city} ${state} ${zip}"
     }
 
+    static namedQueries = {
+        search { filter ->
+            def x = "%${filter}%"
+            or {
+                eq('code', filter)
+                ilike('name', x)
+                ilike('description', x)
+            }
+        }
+    }
+
 }

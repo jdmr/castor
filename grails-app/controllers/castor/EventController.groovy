@@ -1,6 +1,7 @@
 package castor
 
 import grails.plugin.springsecurity.annotation.Secured
+import org.springframework.security.crypto.keygen.KeyGenerators
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -11,10 +12,17 @@ class EventController {
 
     static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
+    def springSecurityService
+    def mailService
+
     @Secured('permitAll')
     def index(Integer max) {
         params.max = Math.min(max ?: 10, 100)
-        respond Event.list(params), model:[eventInstanceCount: Event.count()]
+        if (params.filter) {
+            respond Event.search(params.filter).list(params), model: [eventInstanceCount: Event.search(params.filter).count()]
+        } else {
+            respond Event.list(params), model:[eventInstanceCount: Event.count()]
+        }
     }
 
     @Secured('permitAll')
@@ -23,7 +31,10 @@ class EventController {
     }
 
     def create() {
-        respond new Event(params)
+        Event event = new Event(params)
+        event.code = KeyGenerators.string().generateKey().toString()
+        event.member = springSecurityService.currentUser
+        respond event
     }
 
     @Transactional
@@ -33,17 +44,31 @@ class EventController {
             return
         }
 
+        eventInstance.member = springSecurityService.currentUser
+
         if (eventInstance.hasErrors()) {
+            log.error("Found errors! ${eventInstance.errors}")
             respond eventInstance.errors, view:'create'
             return
         }
 
         eventInstance.save flush:true
 
+        Message finished = Message.findByName(Constants.CODE)
+        String content = finished.content
+        content = content.replaceAll('@@CODE@@', eventInstance.code)
+        content = content.replaceAll('@@NAME@@', eventInstance.member.name)
+        content = content.replaceAll('@@EVENT@@', eventInstance.name)
+        mailService.sendMail {
+            to eventInstance.member.username
+            subject finished.subject
+            html content
+        }
+
         request.withFormat {
             form {
-                flash.message = message(code: 'default.created.message', args: [message(code: 'eventInstance.label', default: 'Event'), eventInstance.id])
-                redirect eventInstance
+                render (view:'finished', model:[event:eventInstance, subject: finished.subject, eventDescription: content])
+                return
             }
             '*' { respond eventInstance, [status: CREATED] }
         }

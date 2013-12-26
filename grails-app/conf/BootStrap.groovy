@@ -69,6 +69,39 @@ class BootStrap {
             forgot.save(flush: true)
         }
 
+        Message code = Message.findByName(Constants.CODE)
+        if (!code) {
+            code = new Message()
+            code.name = Constants.CODE
+            code.subject = "Your RSVP code is available!"
+            code.content = """
+<p>Here is your RSVP code for @@EVENT@@, please provide this code to your special guests</p>
+<p>@@CODE@@</p>
+<p>Enjoy!</p>
+<p>&nbsp;</p>
+<p>Get the best out of your RSVP:</p>
+<ul>
+<li>Track who is attending your event by checking your account daily.</li>
+<li>Promote your RSVP event by using our page on Facebook or Twitter.</li>
+<li>Send out emails and RSVP cards and let your guests know your special code</li>
+<li>Reply to this email with your comment or complaint</li>
+</ul>
+"""
+            code.save(flush: true)
+        }
+
+        Message finishedFree = Message.findByName(Constants.FINISHED)
+        if (!finishedFree) {
+            finishedFree = new Message()
+            finishedFree.name = Constants.FINISHED
+            finishedFree.subject = Constants.FINISHED
+            finishedFree.content = """
+<h1>Thank you for using iRSVPed!</h1>
+<p>Your iRSVPed Code has been sent to your email address and should arrive soon!</p>
+"""
+            finishedFree.save(flush: true)
+        }
+
         log.info('Castor is up!')
     }
 

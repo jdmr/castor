@@ -27,4 +27,6 @@ package castor
 class Constants {
     public static final String FORGOT_MESSAGE = 'FORGOT_MESSAGE'
     public static final String SIGN_UP = 'SIGN_UP'
+    public static final String CODE = 'CODE'
+    public static final String FINISHED = 'FINISHED'
 }
