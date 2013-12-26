@@ -2,6 +2,7 @@
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
 
+grails.config.locations = [ "classpath:${appName}-config.groovy" ]
 // grails.config.locations = [ "classpath:${appName}-config.properties",
 //                             "classpath:${appName}-config.groovy",
 //                             "file:${userHome}/.grails/${appName}-config.properties",
@@ -162,8 +163,8 @@ grails {
     mail {
         host = "smtp.gmail.com"
         port = 465
-        username = "myrsvplease2@gmail.com"
-        password = "Admin2K1"
+        username = "test@gmail.com"
+        password = "test-password!@#"
         props = ["mail.smtp.auth":"true",
                 "mail.smtp.socketFactory.port":"465",
                 "mail.smtp.socketFactory.class":"javax.net.ssl.SSLSocketFactory",
