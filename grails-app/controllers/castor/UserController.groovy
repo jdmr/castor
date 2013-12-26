@@ -82,6 +82,9 @@ class UserController {
             return
         }
 
+        log.debug("Deleting user events")
+        Event.executeUpdate('delete from Event e where e.member.id = :userId', [userId: userInstance.id])
+
         log.debug('Deleting roles first')
         UserRole.removeAll(userInstance)
 

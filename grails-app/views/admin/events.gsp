@@ -32,37 +32,48 @@
 </head>
 
 <body>
-<div class="content">
-    <div class="row">
-        <div class="col-sm-12">
-            <g:form action="events" method="get" class="form-search">
-                <legend><h1>Events</h1></legend>
-                <g:textField name="filter" value="${params.filter}" />
-                <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i> Search</button>
-            </g:form>
-            <g:if test="${flash.message}">
-                <div class="alert alert-block <g:if
-                        test='${flash.messageStyle}'>${flash.messageStyle}</g:if><g:else>alert-success</g:else>">${flash.message}</div>
-            </g:if>
+<div class="row content">
+    <div class="col-sm-3">
+        <div role="navigation">
+            <ul class="nav app-sidenav">
+                <li><a href="${createLink(controller:'user')}">Users</a></li>
+                <li><a href="${createLink(controller:'message')}">Messages</a></li>
+                <li class="active"><a href="${createLink(controller:'admin', action: 'events')}">Events</a></li>
+            </ul>
         </div>
     </div>
-
-    <g:each in="${eventInstanceList}" var="event">
+    <div class="col-sm-9">
         <div class="row">
             <div class="col-sm-12">
-                <h2><a href="${createLink(action:'event', id:event.id)}">${event.name}</a></h2>
-                <p>Date: <g:formatDate date="${event.date}" format="EEE, MMM dd yyyy hh:mm a zzz"/></p>
-                <p>Host: ${event.member.name}</p>
-                <p>Code: ${event.code}</p>
-                <p>Address: ${event.address}</p>
-                ${raw(event.description)}
+                <g:form action="events" method="get" class="form-search">
+                    <legend><h1>Events</h1></legend>
+                    <g:textField name="filter" value="${params.filter}" />
+                    <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i> Search</button>
+                </g:form>
+                <g:if test="${flash.message}">
+                    <div class="alert alert-block <g:if
+                            test='${flash.messageStyle}'>${flash.messageStyle}</g:if><g:else>alert-success</g:else>">${flash.message}</div>
+                </g:if>
             </div>
         </div>
-    </g:each>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <g:paginate total="${eventInstanceCount ?: 0}"/>
+        <g:each in="${eventInstanceList}" var="event">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h2><a href="${createLink(action:'event', id:event.id)}">${event.name}</a></h2>
+                    <p>Date: <g:formatDate date="${event.date}" format="EEE, MMM dd yyyy hh:mm a zzz"/></p>
+                    <p>Host: ${event.member.name}</p>
+                    <p>Code: ${event.code}</p>
+                    <p>Address: ${event.address}</p>
+                    ${raw(event.description)}
+                </div>
+            </div>
+        </g:each>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <g:paginate total="${eventInstanceCount ?: 0}"/>
+            </div>
         </div>
     </div>
 </div>

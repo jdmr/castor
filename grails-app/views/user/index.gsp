@@ -15,6 +15,7 @@
             <ul class="nav app-sidenav">
                 <li class="active"><a href="${createLink(controller:'user')}">Users</a></li>
                 <li><a href="${createLink(controller:'message')}">Messages</a></li>
+                <li><a href="${createLink(controller:'admin', action: 'events')}">Events</a></li>
             </ul>
         </div>
     </div>
