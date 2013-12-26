@@ -25,10 +25,92 @@
 package castor
 
 import grails.plugin.springsecurity.annotation.Secured
+import grails.transaction.Transactional
+
+import static org.springframework.http.HttpStatus.NOT_FOUND
 
 @Secured('permitAll')
+@Transactional(readOnly = true)
 class HomeController {
 
     def index() {
     }
+
+    def code() {
+        Event eventInstance = Event.findByCode(params.code)
+        if (!eventInstance) {
+            flash.message = 'Invalid code. Please try again'
+            flash.messageStyle = 'alert-danger'
+            render view:'index'
+            return
+        }
+
+        if (eventInstance.seats > 0) {
+            def c = Party.createCriteria()
+            def rsvps = c.get {
+                event {
+                    idEq(eventInstance.id)
+                }
+                projections {
+                    sum "seats"
+                }
+            }
+            if (rsvps >= eventInstance.seats) {
+                flash.message = "${eventInstance.name} is full. Sorry."
+                flash.messageStyle = 'alert-danger'
+                render view:'index'
+                return
+            }
+        }
+
+        flash.message = ''
+
+        Party party = new Party(event: eventInstance)
+        render view: 'rsvp', model: [party: party]
+    }
+
+    @Transactional
+    def rsvp(Party party) {
+        if (party == null) {
+            notFound()
+            return
+        }
+        if (party.hasErrors()) {
+            respond party.errors, view:'rsvp'
+            return
+        }
+        if (eventInstance.seats > 0) {
+            def c = Party.createCriteria()
+            def rsvps = c.get {
+                event {
+                    idEq(eventInstance.id)
+                }
+                projections {
+                    sum "seats"
+                }
+            }
+            if (rsvps + party.seats > eventInstance.seats) {
+                flash.message = "There's only ${eventInstance.seats - rsvps} left."
+                flash.messageStyle = 'alert-danger'
+                render view:'rsvp'
+                return
+            }
+        }
+
+        party.save(flush:true)
+
+        flash.message = 'Your RSVP was successfull.<br />Thank you!'
+        redirect controller:'home'
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'party.label', default: 'Party'), params.id])
+                redirect action: "index", method: "GET"
+            }
+            '*'{ render status: NOT_FOUND }
+        }
+    }
+
 }

@@ -29,9 +29,22 @@
 </head>
 
 <body>
-    <div class="row">
-        <div class="col-sm-12" id="loginLink">
-            Hello World!
+    <div class="row content">
+        <div class="col-sm-offset-4 col-sm-4" id="loginLink" style="padding: 50px;">
+
+            <g:form action="code" method="post" autocomplete="off" name="codeForm">
+
+                <div class="input-group">
+                    <input type="text" class="form-control" name="code" id="code" placeholder="iRSVPed Code" style="text-align: center;" autofocus="autofocus" value="${params.code}"/>
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="submit">RSVP</button>
+                    </span>
+                </div>
+            </g:form>
+
+            <g:if test="${flash?.message}">
+                <div class="alert <g:if test='${flash.messageStyle}'>${flash.messageStyle}</g:if><g:else>alert-success</g:else>" style="margin-top: 10px;">${raw(flash.message)}</div>
+            </g:if>
         </div>
     </div>
 </body>
