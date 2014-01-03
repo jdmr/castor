@@ -35,7 +35,7 @@
             <g:form action="code" method="post" autocomplete="off" name="codeForm">
 
                 <div class="input-group">
-                    <input type="text" class="form-control" name="code" id="code" placeholder="iRSVPed Code" style="text-align: center;" autofocus="autofocus" value="${params.code}"/>
+                    <input type="text" class="form-control" name="code" id="code" placeholder="Type your iRSVPed Code" style="text-align: center;" autofocus="autofocus" value="${params.code}"/>
                     <span class="input-group-btn">
                         <button class="btn btn-primary" type="submit">RSVP</button>
                     </span>
