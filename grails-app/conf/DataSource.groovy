@@ -1,8 +1,8 @@
 dataSource {
     pooled = true
-    driverClassName = "com.mysql.jdbc.Driver"
-    username = "castor"
-    password = "castor00"
+    driverClassName = "org.postgresql.Driver"
+    username = "test"
+    password = "test00"
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -16,19 +16,19 @@ environments {
     development {
         dataSource {
             dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:mysql:///castor"
+            url = "jdbc:postgresql:castor"
         }
     }
     test {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql:///castor"
+            url = "jdbc:postgresql:castor"
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:mysql:///castor"
+            url = "jdbc:postgresql:castor"
             properties {
                maxActive = -1
                minEvictableIdleTimeMillis=1800000

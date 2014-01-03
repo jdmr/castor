@@ -1,7 +1,7 @@
 package castor
 
 import grails.plugin.springsecurity.annotation.Secured
-import org.springframework.security.crypto.keygen.KeyGenerators
+import org.apache.commons.lang.RandomStringUtils
 
 import static org.springframework.http.HttpStatus.*
 import grails.transaction.Transactional
@@ -32,7 +32,7 @@ class EventController {
 
     def create() {
         Event event = new Event(params)
-        event.code = KeyGenerators.string().generateKey().toString()
+        event.code = RandomStringUtils.random(6,true,true)
         event.member = springSecurityService.currentUser
         respond event
     }

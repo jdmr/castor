@@ -39,7 +39,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a href="${createLink(uri:'/')}" class="navbar-brand"><img src="${resource(dir: 'images', file: 'iRSVPed-logo.png')}" alt="${message(code: 'project.name')}" /></a>
+                    <a href="${createLink(uri:'/')}" class="navbar-brand"><img src="${resource(dir: 'images', file: 'iRSVPed-logo.png')}" alt="${message(code: 'project.name')}" style="height:50px;"/></a>
                 </div>
                 <nav class="collapse navbar-collapse castor-navbar-collapse" role="navigation">
                     <ul class="nav navbar-nav navbar-right" id="nav-options">
