@@ -162,6 +162,8 @@
                             open: function() {
                                 $('#ajaxLoginForm').hide();
                                 $('#signupDiv').show();
+                                $('#sname').focus();
+
                             }
                         }
                     });

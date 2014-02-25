@@ -79,20 +79,20 @@ class HomeController {
             respond party.errors, view:'rsvp'
             return
         }
+        Event eventInstance = party.event
         if (eventInstance.seats > 0) {
             def c = Party.createCriteria()
             def rsvps = c.get {
-                event {
-                    idEq(eventInstance.id)
-                }
+
                 projections {
                     sum "seats"
                 }
             }
-            if (rsvps + party.seats > eventInstance.seats) {
+            log.debug("$rsvps : $party.seats")
+            if ((rsvps?:0) + party.seats > eventInstance.seats) {
                 flash.message = "There's only ${eventInstance.seats - rsvps} left."
                 flash.messageStyle = 'alert-danger'
-                render view:'rsvp'
+                render view:'rsvp', model: ['party': party]
                 return
             }
         }

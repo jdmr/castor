@@ -26,6 +26,7 @@ package castor
 
 import grails.converters.JSON
 import grails.plugin.springsecurity.annotation.Secured
+import jline.internal.Log
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache
 import org.springframework.security.web.savedrequest.SavedRequest
 
@@ -52,6 +53,7 @@ class SignupController {
         try {
             User.withTransaction {
 
+                log.debug("saving $user.username")
                 user.save()
 
                 Role roleUser = Role.findByAuthority('ROLE_USER')
@@ -62,13 +64,14 @@ class SignupController {
                 String content = signup.content
                 content = content.replaceAll('@@NAME@@', user.name)
                 content = content.replaceAll('@@USERNAME@@', user.username)
-                content = content.replaceAll('@@PASSWORD@@', password)
+                content = content.replaceAll('@@PASSWORD@@',password)
 
                 sendMail {
                     to user.username
                     subject signup.subject
                     html content
                 }
+
             }
         } catch(Exception e) {
             log.error("Error creating user ${user.username}", e)
