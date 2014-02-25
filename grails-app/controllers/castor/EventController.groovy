@@ -74,6 +74,7 @@ class EventController {
         }
     }
 
+
     def edit(Event eventInstance) {
         respond eventInstance
     }
