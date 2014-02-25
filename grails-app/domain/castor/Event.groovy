@@ -25,7 +25,7 @@
 package castor
 
 class Event implements Serializable {
-
+    String id
     String code
     String name
     String description
@@ -48,6 +48,7 @@ class Event implements Serializable {
 
     static mapping = {
         table 'events'
+        id generator: 'uuid'
         date name: 'date_'
         state column: 'state_'
         name index:'event_name_idx'
