@@ -76,7 +76,13 @@ class EventController {
 
 
     def edit(Event eventInstance) {
-        respond eventInstance
+        User user = springSecurityService.currentUser
+        if (eventInstance.member == user) {
+            respond eventInstance
+        } else {
+            response.status = 401
+            render(view:'/401')
+        }
     }
 
     @Transactional

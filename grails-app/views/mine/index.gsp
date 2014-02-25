@@ -51,7 +51,7 @@
     <g:each in="${eventInstanceList}" var="event">
         <div class="row">
             <div class="col-sm-12">
-                <h2><a href="${createLink(controller: 'event', action:'show', id:event.id)}">${event.name}</a></h2>
+                <h2><a href="${createLink(controller: 'event', action:'show', id:event.id)}">${event.name}</a> <a href="${createLink(controller: 'event', action: 'edit', id: event.id)}" class="btn btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a> </h2>
                 <p>Date: <g:formatDate date="${event.date}" format="EEE, MMM dd yyyy hh:mm a zzz"/></p>
                 <p>Host: ${event.member.name}</p>
                 ${raw(event.description)}

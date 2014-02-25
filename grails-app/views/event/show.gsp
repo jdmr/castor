@@ -21,9 +21,6 @@
     <div class="row">
         <div class="col-sm-12">
             <a href="#" class="btn btn-default btn-lg" id="backBtn">Back</a>
-
-            <a href="../edit" class="btn btn-default btn-lg" id="editBtn">Edit</a>
-
         </div>
     </div>
 </div>
