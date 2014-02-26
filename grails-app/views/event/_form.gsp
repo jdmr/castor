@@ -44,8 +44,14 @@
                 <g:message code="event.date.label" default="Date"/>
                 <span class="required-indicator">*</span>
             </label>
-            <g:datePicker name="date" id="date" value="${eventInstance.date}" precision="minute"
-                          noSelection="['': '-Choose-']" relativeYears="[0..2]"/>
+            <!-- <g:datePicker name="date" id="date" value="${eventInstance.date}"  precision="minute"
+                          noSelection="['':'-Choose-']" relativeYears="[0..2]"/> -->
+
+            <calendar:resources lang="en" theme="blue2"/>
+            <calendar:datePicker name="date" defaultValue="${eventInstance.date}"  showTime="true" showReset="true" timeFormat="%I" />
+
+
+
         </div>
     </div>
 </div>

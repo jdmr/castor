@@ -52,6 +52,9 @@ grails.project.dependency.resolution = {
         runtime 'mysql:mysql-connector-java:5.1.24'
         runtime 'org.postgresql:postgresql:9.2-1004-jdbc41'
 
+
+
+
     }
 
     plugins {
@@ -79,5 +82,8 @@ grails.project.dependency.resolution = {
         //runtime ":zipped-resources:1.0.1"
         //runtime ":cached-resources:1.1"
         //runtime ":yui-minify-resources:0.1.5"
+
+        compile ":calendar:1.2.1"
+
     }
 }
